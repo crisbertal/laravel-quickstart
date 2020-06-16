@@ -6,7 +6,7 @@
         @include('common.errors')
 
         <form action="/task" method="POST" class="form-horizontal">
-            {{ csrf_field }} 
+            @csrf
 
             <!-- Task Name -->
             <div class="form-group">
@@ -27,5 +27,47 @@
             </div>
         </form>
     </div>
+
     <!-- TODO: Current Task -->
+    @if (count($tasks) > 0)
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Current task
+            </div>
+
+            <div class="panel-body">
+                <table class="table table-striped task-table"> 
+
+                <!-- Table Headings -->
+                <thead>
+                    <th>Task</th> 
+                    <th>&nbsp;</th> 
+                </thead>
+
+                <!-- Table Body -->
+                <tbody>
+                    @foreach ($task as $task)
+                        <tr>
+                            <!-- Task Name -->
+                            <td>
+                                <div>{{ $task->name }}</div> 
+                            </td>
+
+                            <!-- Delete Button -->
+                            <td>
+                                <form action="{{ url('task/'.$task->id) }}" method="POST">
+                                    @csrf
+                                    {{ method_field('DELETE') }}
+
+                                    <button type="submit" class="btn btn-danger">
+                                        <i class="fa fa-trash"></id> Delete
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </div>
+        </div>
+    @endif
 @endsection
